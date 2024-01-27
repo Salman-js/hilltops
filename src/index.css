@@ -1,68 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+.root {
+  @apply p-0;
 }
-a:hover {
-  color: #535bf2;
+* {
+  @apply p-0;
 }
-
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  @apply h-auto w-full m-0 overflow-hidden;
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.main-layout {
+  @apply min-h-screen h-auto w-full bg-gray-50 bg-fixed flex flex-row justify-center items-center;
 }
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+.left-sidebar {
+  @apply w-fit overflow-hidden p-3 px-0 min-h-screen max-h-screen min-w-fit overflow-y-auto flex flex-col justify-start bg-white;
 }
-button:hover {
-  border-color: #646cff;
+.right-sidebar {
+  @apply w-1/5 p-3 min-h-screen max-h-screen overflow-y-auto hidden lg:flex flex-col justify-start;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.sidebar-content {
+  @apply w-full flex flex-col justify-start space-y-6;
 }
-
+.main {
+  @apply h-auto w-full flex flex-col;
+}
+.home-container {
+  @apply min-h-screen max-h-screen bg-opacity-50 backdrop-filter backdrop-blur-lg py-4 overflow-y-auto flex flex-col items-center bg-white;
+}
+/* =====================================Home================== */
+.home-header {
+  @apply w-11/12;
+}
+.welcome-text {
+  @apply text-2xl text-gray-900 font-semibold tracking-wide;
+}
+.home-header-tiles-container {
+  @apply w-10/12 p-3;
+}
+.home-header-tile {
+  @apply bg-white shadow-md rounded-xl;
+}
+.alerts-container {
+  @apply overflow-auto max-h-[7.6em] min-h-[7.6em] pr-5 my-2 rounded-lg;
+}
+.home-tile {
+  @apply w-full flex flex-row space-x-3 items-center;
+}
+.home-tile-icon-container {
+  @apply p-3 rounded-xl bg-slate-200 flex justify-center items-center;
+}
+.home-tile-text-container {
+  @apply flex flex-col justify-start;
+}
+.home-tile-value,
+.home-tile-title {
+  @apply font-semibold tracking-wide;
+}
+.home-tile-title {
+  @apply text-base  text-gray-500;
+}
+.home-tile-value {
+  @apply text-sm text-gray-900;
+}
+.home-analytics-container {
+  @apply w-10/12 py-4;
+}
+.analytics-tile {
+  @apply bg-none;
+}
+.analytics-title {
+  @apply text-lg font-semibold tracking-wide text-gray-900 px-3;
+}
+.analytics-graph-container {
+  @apply w-full bg-white rounded-xl p-1 shadow-md my-5;
+}
+/* ================================Right Sidebar================= */
+.sidebar-header-container {
+  @apply flex flex-row justify-between items-center;
+}
+.sidebar-header-user-btn {
+  @apply flex flex-row justify-center bg-white space-x-2 p-2 rounded-lg hover:bg-gray-200 px-4 cursor-pointer;
+}
+.sidebar-title {
+  @apply text-base font-semibold tracking-wide text-gray-900 px-3;
+}
+.sidebar-chores-container {
+  @apply rounded-lg bg-white p-4 shadow-md;
+}
+.chore-title {
+  @apply text-sm font-semibold tracking-wide text-gray-800 transition-all;
+}
+/* ============================ Login ======================== */
+.login-main-container {
+  @apply bg-gradient-to-tr from-gray-700 to-gray-800;
+}
+.login-container {
+  @apply w-3/4 rounded-3xl p-2 flex flex-row shadow-lg bg-white space-x-1;
+}
+.login-image-container,
+.login-form-container {
+  @apply w-1/2 rounded-2xl;
+}
+.login-image-container {
+  @apply border bg-cover bg-center bg-no-repeat min-h-[90vh] flex flex-col justify-end items-start bg-blend-difference rounded-2xl overflow-hidden;
+  background-image: url('/assets/login-bg.jpg');
+}
+.login-image-text-container {
+  @apply w-full h-full flex flex-col justify-end items-start bg-gray-900 bg-opacity-50;
+}
+.login-form-container {
+  @apply flex flex-col justify-between items-center py-4;
+}
+.login-form-main {
+  @apply w-full flex flex-col justify-center items-center text-left;
+}
+.login-form-main .ant-btn-primary:hover {
+  @apply bg-gray-800;
+}
+/* ================================ Chores ====================== */
+.chore-container {
+  @apply min-h-screen max-h-screen bg-opacity-50 backdrop-filter backdrop-blur-lg p-4 overflow-y-auto flex flex-col items-center bg-white;
+}
+.chore-calendar-container {
+  @apply w-full;
+}
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
