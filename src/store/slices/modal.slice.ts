@@ -1,17 +1,25 @@
+import { IItem } from '@/Interface/Item/item.interface';
+import { IVendor } from '@/Interface/Vendor/vendor.interface';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { IPurchase } from '@/Interface/Purchase/purchase.interface';
 
 export interface IModal {
-  isVisible: boolean;
-  name?: string;
+  isVisible?: boolean;
+  name?: ModalNameType;
   width?: number;
   component?: React.ReactElement;
   title?: string;
+  onOk?: () => void;
+  item?: ModalItemType;
 }
-
+export type ModalNameType = 'item' | 'vendor' | 'purchase';
+export type ModalItemType = IVendor | IItem | IPurchase | null;
 const initialState: IModal = {
   isVisible: false,
   width: 600,
+  onOk: () => closeModal(),
+  item: null,
 };
 
 export const modalSlice = createSlice({
@@ -21,9 +29,11 @@ export const modalSlice = createSlice({
     openModal: (state, action: PayloadAction<IModal>) => {
       const { payload } = action;
       state.isVisible = true;
-      state.component = payload.component;
       state.title = payload.title;
       state.width = payload.width ?? 600;
+      state.onOk = payload.onOk;
+      state.name = payload.name;
+      state.component = payload.component;
     },
     closeModal: (state) => {
       state.isVisible = false;
@@ -31,6 +41,7 @@ export const modalSlice = createSlice({
       state.title = undefined;
       state.name = undefined;
       state.width = 600;
+      state.item = null;
     },
   },
 });

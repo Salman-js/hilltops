@@ -68,7 +68,7 @@ const HomeTopTile: React.FC<tileHomeProps> = ({ vendors, items }) => {
                     <span className='home-tile-title'>Users</span>
                   </div>
                   <div>
-                    <span className='home-tile-value'>{items.length}</span>
+                    <span className='home-tile-value'>2</span>
                   </div>
                 </div>
               </Col>
@@ -81,7 +81,17 @@ const HomeTopTile: React.FC<tileHomeProps> = ({ vendors, items }) => {
                     <span className='home-tile-title'>Expenses</span>
                   </div>
                   <div>
-                    <span className='home-tile-value'>{items.length}</span>
+                    <span className='text-xs text-gray-900'>
+                      ETB{' '}
+                      {items
+                        .reduce((sum, item) => {
+                          const unitPrice = item.unitPrice ?? 0;
+                          const quantity = item.startQuantity ?? 0;
+                          const amount = unitPrice * quantity;
+                          return sum + amount;
+                        }, 0)
+                        .formatCurrency()}
+                    </span>
                   </div>
                 </div>
               </Col>

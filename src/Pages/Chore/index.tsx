@@ -26,10 +26,16 @@ export default function Chore() {
           return (
             <Badge
               key={item.id}
-              status={item.done ? 'success' : 'processing'}
+              status={
+                item.done
+                  ? 'success'
+                  : moment(item.date).isBefore(moment(), 'day')
+                  ? 'warning'
+                  : 'processing'
+              }
               text={item.title}
               className={
-                realChore?.done ? 'chore- title line-through' : 'chore-title'
+                realChore?.done ? 'chore-title line-through' : 'chore-title'
               }
             />
           );
@@ -42,13 +48,25 @@ export default function Chore() {
     const listData: IChore[] = getListData(value, 'month');
     return (
       <div className='events'>
-        {listData.map((item) => (
-          <Badge
-            key={item.id}
-            status={item.done ? 'success' : 'processing'}
-            text={item.title}
-          />
-        ))}
+        {listData.map((item) => {
+          const realChore = chores.find((chr) => chr.id === item.id);
+          return (
+            <Badge
+              key={item.id}
+              status={
+                item.done
+                  ? 'success'
+                  : moment(item.date).isBefore(moment(), 'day')
+                  ? 'warning'
+                  : 'processing'
+              }
+              text={item.title}
+              className={
+                realChore?.done ? 'chore-title line-through' : 'chore-title'
+              }
+            />
+          );
+        })}
       </div>
     );
   };

@@ -12,6 +12,7 @@
 .root {
   @apply p-0;
 }
+/* ===================================== UI ======================= */
 * {
   @apply p-0;
 }
@@ -97,7 +98,7 @@ body {
   @apply rounded-lg bg-white p-4 shadow-md;
 }
 .chore-title {
-  @apply text-sm font-semibold tracking-wide text-gray-800 transition-all;
+  @apply text-white lg:text-sm font-semibold tracking-wide lg:text-gray-800 transition-all;
 }
 /* ============================ Login ======================== */
 .login-main-container {

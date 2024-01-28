@@ -1,5 +1,6 @@
 import { IChore } from '@/Interface/Chore/chore.interface';
 import { IItem } from '@/Interface/Item/item.interface';
+import { IPurchase } from '@/Interface/Purchase/purchase.interface';
 import { IVendor } from '@/Interface/Vendor/vendor.interface';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -8,12 +9,14 @@ export interface IData {
   items: IItem[];
   vendors: IVendor[];
   chores: IChore[];
+  purchases: IPurchase[];
 }
 
 const initialState: IData = {
   items: [],
   vendors: [],
   chores: [],
+  purchases: [],
 };
 
 export const dataSlice = createSlice({
@@ -29,6 +32,9 @@ export const dataSlice = createSlice({
     addChore: (state, action: PayloadAction<IChore>) => {
       state.chores = [...state.chores, action.payload];
     },
+    addPurchase: (state, action: PayloadAction<IPurchase>) => {
+      state.purchases = [...state.purchases, action.payload];
+    },
     removeItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
@@ -40,6 +46,11 @@ export const dataSlice = createSlice({
     removeChore: (state, action: PayloadAction<string>) => {
       state.chores = state.chores.filter(
         (chore) => chore.id !== action.payload
+      );
+    },
+    removePurchase: (state, action: PayloadAction<string>) => {
+      state.purchases = state.purchases.filter(
+        (purchase) => purchase.id !== action.payload
       );
     },
     updateItem: (
@@ -90,10 +101,27 @@ export const dataSlice = createSlice({
         }
       });
     },
+    updatePurchase: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        purchase: IPurchase;
+      }>
+    ) => {
+      const { payload } = action;
+      state.purchases = state.purchases.map((purchase) => {
+        if (purchase.id === payload.id) {
+          return payload.purchase;
+        } else {
+          return purchase;
+        }
+      });
+    },
     resetData: (state) => {
       state.chores = [];
       state.vendors = [];
       state.items = [];
+      state.purchases = [];
     },
   },
 });
@@ -102,12 +130,15 @@ export const {
   addItem,
   addVendor,
   addChore,
+  addPurchase,
   updateItem,
   updateVendor,
   updateChore,
+  updatePurchase,
   removeItem,
   removeVendor,
   removeChore,
+  removePurchase,
   resetData,
 } = dataSlice.actions;
 

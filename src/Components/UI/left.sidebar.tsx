@@ -4,6 +4,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ShopOutlined,
+  ShoppingCartOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Menu, MenuProps } from 'antd';
@@ -26,7 +27,12 @@ const LeftSidebar: React.FC = () => {
     {
       key: 'inventory',
       label: 'Inventory',
-      icon: <BsBoxSeam size={20} />,
+      icon: <BsBoxSeam size={18} />,
+    },
+    {
+      key: 'purchase',
+      label: 'Purchases',
+      icon: <ShoppingCartOutlined style={{ fontSize: 20 }} />,
     },
     {
       key: 'vendor',
