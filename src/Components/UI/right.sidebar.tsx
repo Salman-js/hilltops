@@ -1,7 +1,15 @@
 import { IChore } from '@/Interface/Chore/chore.interface';
 import { addChore, updateChore } from '@/store/slices/basic.slice';
 import { RootState } from '@/store/store';
-import { Avatar, Button, Checkbox, Dropdown, MenuProps, Popover } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Checkbox,
+  Dropdown,
+  MenuProps,
+  Popover,
+} from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { ChevronDown } from 'lucide-react';
 import moment from 'moment';
@@ -14,6 +22,9 @@ import { logout } from '@/store/slices/auth.slice';
 
 const RightSidebar: React.FC = () => {
   const chores = useSelector((state: RootState) => state.data.chores);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const userName = user?.name;
+  const isManager = user?.role === 'MANAGER';
   const dispatch = useDispatch();
   const todaysChores = chores.filter((chore) =>
     moment(chore.date).isSame(moment(), 'day')
@@ -64,7 +75,10 @@ const RightSidebar: React.FC = () => {
         <Button type='text' icon={<VscBellDot />} className='bg-white' />
         <Dropdown menu={{ items }} trigger={['click']} placement='bottomRight'>
           <div className='sidebar-header-user-btn'>
-            <Avatar shape='square' size={25} /> <span>Salman</span>
+            <Badge dot={isManager} color='blue'>
+              <Avatar shape='square' size={25} />
+            </Badge>
+            <span>{userName}</span>
             <ChevronDown size={15} className='my-auto' />
           </div>
         </Dropdown>
@@ -99,7 +113,9 @@ const RightSidebar: React.FC = () => {
       <div className='sidebar-tile'>
         <p className='sidebar-title'>Notifications</p>
         <div className='sidebar-chores-container'>
-          <AddSamples />
+          <div className='m-5 text-sm font-semibold text-gray-400 opacity-50'>
+            No notifications
+          </div>
         </div>
       </div>
     </div>

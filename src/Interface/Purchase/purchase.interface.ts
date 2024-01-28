@@ -3,7 +3,7 @@ import { IVendor } from '../Vendor/vendor.interface';
 import { IItem } from '../Item/item.interface';
 
 export interface IPurchase {
-  id?: string;
+  id: string;
   orderNo: string;
   date: Date | Moment;
   vendorId: string;
@@ -15,7 +15,11 @@ export interface IPItem {
   id: string;
   itemId?: string;
   item?: IItem;
-  unitPrice: number;
-  quantity: number;
+  unitPrice?: number;
+  quantity?: number;
   description?: string;
+}
+
+export interface IPPurchase extends IPurchase, IPItem {
+  children?: IPItem[];
 }

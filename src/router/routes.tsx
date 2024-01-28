@@ -7,6 +7,9 @@ import RightSidebar from '@/Components/UI/right.sidebar';
 import Fab from '@/Components/UI/fab';
 import Login from '@/Pages/Login';
 import Chore from '@/Pages/Chore';
+import Inventory from '@/Pages/Inventory';
+import Vendor from '@/Pages/Vendor';
+import Purchase from '@/Pages/Purchase';
 
 const RoutesComponent = () => {
   const location = useLocation();
@@ -26,6 +29,9 @@ const RoutesComponent = () => {
           <Route element={<ProtectedRoute />}>
             <Route path={ROUTES.HOME} element={<Home />} />
             <Route path={ROUTES.CHORE} element={<Chore />} />
+            <Route path={ROUTES.INVENTORY} element={<Inventory />} />
+            <Route path={ROUTES.VENDOR} element={<Vendor />} />
+            <Route path={ROUTES.ADJUSTMENT} element={<Purchase />} />
           </Route>
         </Routes>
 

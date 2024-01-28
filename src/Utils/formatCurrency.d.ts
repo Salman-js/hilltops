@@ -6,6 +6,9 @@ declare global {
       maxFractionDigits?: number
     ): string;
   }
+  interface Number {
+    formatNumber(): string;
+  }
 }
 
 export {};

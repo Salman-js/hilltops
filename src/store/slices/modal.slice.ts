@@ -1,4 +1,4 @@
-import { IItem } from '@/Interface/Item/item.interface';
+import { IDischarge, IItem } from '@/Interface/Item/item.interface';
 import { IVendor } from '@/Interface/Vendor/vendor.interface';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
@@ -13,8 +13,8 @@ export interface IModal {
   onOk?: () => void;
   item?: ModalItemType;
 }
-export type ModalNameType = 'item' | 'vendor' | 'purchase';
-export type ModalItemType = IVendor | IItem | IPurchase | null;
+export type ModalNameType = 'item' | 'vendor' | 'purchase' | 'discharge';
+export type ModalItemType = IVendor | IItem | IPurchase | IDischarge | null;
 const initialState: IModal = {
   isVisible: false,
   width: 600,
@@ -33,6 +33,7 @@ export const modalSlice = createSlice({
       state.width = payload.width ?? 600;
       state.onOk = payload.onOk;
       state.name = payload.name;
+      state.item = payload.item;
       state.component = payload.component;
     },
     closeModal: (state) => {

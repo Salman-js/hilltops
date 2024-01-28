@@ -1,21 +1,24 @@
 import { ROUTES } from '@/router/constants';
+import { RootState } from '@/store/store';
 import {
   CheckOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   ShopOutlined,
-  ShoppingCartOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Menu, MenuProps } from 'antd';
 import { LayoutDashboard } from 'lucide-react';
 import React, { useState } from 'react';
 import { BsBoxSeam } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const LeftSidebar: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const isManager = user?.role === 'MANAGER';
   const navigate = useNavigate();
   const items: MenuItem[] = [
     {
@@ -27,23 +30,24 @@ const LeftSidebar: React.FC = () => {
     {
       key: 'inventory',
       label: 'Inventory',
+      onClick: () => navigate(ROUTES.INVENTORY),
       icon: <BsBoxSeam size={18} />,
-    },
-    {
-      key: 'purchase',
-      label: 'Purchases',
-      icon: <ShoppingCartOutlined style={{ fontSize: 20 }} />,
     },
     {
       key: 'vendor',
       label: 'Vendors',
+      onClick: () => navigate(ROUTES.VENDOR),
       icon: <ShopOutlined />,
     },
-    {
-      key: 'user',
-      label: 'Users',
-      icon: <UserOutlined />,
-    },
+    ...(isManager
+      ? [
+          {
+            key: 'user',
+            label: 'Users',
+            icon: <UserOutlined />,
+          },
+        ]
+      : []),
     {
       key: 'chore',
       label: 'Chores',

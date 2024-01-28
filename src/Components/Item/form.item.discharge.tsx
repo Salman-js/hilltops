@@ -1,9 +1,9 @@
-import { IItem } from '@/Interface/Item/item.interface';
 import { generateId } from '@/Utils/generate';
 import { RootState } from '@/store/store';
 import {
   Button,
   Cascader,
+  Checkbox,
   Col,
   Form,
   Input,
@@ -17,20 +17,32 @@ import {
 import React, { useEffect, useMemo, useState } from 'react';
 import { IoSparklesOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
-import { categoryOptions } from './item.utils';
+import { categoryOptions, getStockAmount } from './item.utils';
 import { closeModal } from '@/store/slices/modal.slice';
-import { addItem, updateItem } from '@/store/slices/basic.slice';
+import {
+  addDischarge,
+  addItem,
+  updateDischarge,
+  updateItem,
+} from '@/store/slices/basic.slice';
 import { DatePicker } from '../UI/Custom Pickers';
 import moment from 'moment';
+import { IDischarge, IItem } from '@/Interface/Item/item.interface';
 
 type formItemProps = {
-  item: IItem | null;
+  item: IDischarge | null;
 };
 
-const ItemForm: React.FC<formItemProps> = ({ item }) => {
+const ItemDischargeForm: React.FC<formItemProps> = ({ item }) => {
   const [form] = Form.useForm();
-  const [selectedItem, setSelectedItem] = useState<IItem | null>(item);
-  const { vendors, items } = useSelector((state: RootState) => state.data);
+  const [selectedItem, setSelectedItem] = useState<IDischarge | null>(item);
+  const [dischargedItem, setDischargedItem] = useState<IItem | null>(
+    item?.item ?? null
+  );
+  const [toBeReturned, setToBeReturned] = useState(item?.toBeReturned ?? false);
+  const { purchases, discharges, items } = useSelector(
+    (state: RootState) => state.data
+  );
   const { user } = useSelector((state: RootState) => state.auth);
   const approved = user?.role === 'MANAGER';
   const dispatch = useDispatch();
@@ -41,7 +53,8 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     if (item) {
       return {
         ...item,
-        lastPurchaseDate: moment(item.lastPurchaseDate),
+        date: moment(item.date),
+        returnDate: moment(item.returnDate),
       };
     } else {
       return {};
@@ -52,36 +65,32 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     form
       .validateFields()
       .then((values) => {
-        const newItem: IItem = {
+        const newItem: IDischarge = {
           id: selectedItem?.id,
           ...values,
-          vendors: vendors.map((vendor) =>
-            values.vendors.includes(vendor.name)
-          ),
+          item: items.find((item) => item.name === values.item),
         };
         if (selectedItem) {
           dispatch(
-            updateItem({
+            updateDischarge({
               id: selectedItem?.id as string,
-              item: newItem,
+              discharge: newItem,
             })
           );
           message.success({
-            content: 'Item updated',
+            content: 'Item Discharged',
           });
           dispatch(closeModal());
         } else {
-          const newItem: IItem = {
+          const newItem: IDischarge = {
             id: String(new Date().getTime()),
             ...values,
             approved,
-            vendors: vendors.map((vendor) =>
-              values.vendors.includes(vendor.name)
-            ),
+            item: items.find((item) => item.name === values.item),
           };
-          dispatch(addItem(newItem));
+          dispatch(addDischarge(newItem));
           message.success({
-            content: 'Item created',
+            content: 'Discharge data updated',
           });
           dispatch(closeModal());
         }
@@ -97,10 +106,10 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     <div className='form-container'>
       <Form form={form} layout='vertical'>
         <Row gutter={[10, 0]}>
-          <Col lg={6} xs={24}>
+          <Col lg={8} xs={12}>
             <Form.Item
-              name='itemId'
-              label='Item ID'
+              name='orderNo'
+              label='Discharge Order #'
               rules={[
                 {
                   required: true,
@@ -109,14 +118,14 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               ]}
             >
               <Input
-                placeholder='ID'
+                placeholder='Order #'
                 size='large'
                 addonAfter={
                   <Tooltip title='generate'>
                     <IoSparklesOutline
                       onClick={() => {
                         form.setFieldsValue({
-                          itemId: generateId(items[0]?.itemId),
+                          orderNo: generateId(discharges[0]?.orderNo),
                         });
                       }}
                       className='cursor-pointer'
@@ -126,97 +135,96 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               />
             </Form.Item>
           </Col>
-          <Col lg={18} xs={24}>
+          <Col lg={16} xs={12}>
             <Form.Item
-              name='name'
-              label='Item Name'
+              name='item'
+              label='Item'
               rules={[
                 {
                   required: true,
-                  message: 'Please enter item name',
+                  message: 'Please select item',
                 },
               ]}
             >
-              <Input size='large' placeholder='Name' />
-            </Form.Item>
-          </Col>
-          <Col lg={6} xs={12}>
-            <Form.Item
-              name='unitPrice'
-              label='Unit Price'
-              rules={[
-                {
-                  required: true,
-                  message: 'Required',
-                },
-              ]}
-            >
-              <InputNumber
-                controls={false}
-                size='large'
-                prefix={'ETB'}
-                min={0}
-                className='w-full'
-              />
-            </Form.Item>
-          </Col>
-          <Col lg={6} xs={12}>
-            <Form.Item
-              name='startQuantity'
-              label='Starting Quantity'
-              rules={[
-                {
-                  required: true,
-                  message: 'Required',
-                },
-              ]}
-            >
-              <InputNumber
-                controls={false}
-                size='large'
-                min={0}
-                className='w-full'
-              />
-            </Form.Item>
-          </Col>
-          <Col lg={12} xs={24}>
-            <Form.Item name='vendors' label='Vendors'>
               <Select
-                options={vendors.map((vendor) => {
+                options={items.map((item) => {
                   return {
-                    value: vendor.name,
+                    value: item.name,
                   };
                 })}
-                mode='multiple'
+                onChange={(value) =>
+                  setDischargedItem(
+                    items.find((itm) => itm.name === value) ?? null
+                  )
+                }
                 size='large'
               />
             </Form.Item>
           </Col>
-          <Col lg={12} xs={24}>
-            <Form.Item name='category' label='Category'>
-              <Cascader
-                options={categoryOptions}
-                placeholder='Category'
+          <Col lg={8} xs={12}>
+            <Form.Item
+              name='quantity'
+              label='Quantity'
+              rules={[
+                {
+                  required: true,
+                  message: 'Required',
+                },
+              ]}
+            >
+              <InputNumber
+                controls={false}
                 size='large'
+                min={0}
+                addonBefore={`Max = ${getStockAmount(
+                  dischargedItem,
+                  purchases,
+                  discharges
+                )}`}
+                max={getStockAmount(dischargedItem, purchases, discharges)}
+                disabled={!dischargedItem}
                 className='w-full'
               />
             </Form.Item>
           </Col>
-          <Col lg={12} xs={24}>
-            <Form.Item name='lastPurchaseDate' label='Last Purchase Date'>
+          <Col lg={8} xs={12}>
+            <Form.Item name='givenTo' label='Given To'>
+              <Input size='large' placeholder='Given to' />
+            </Form.Item>
+          </Col>
+          <Col lg={8} xs={12}>
+            <Form.Item
+              name='date'
+              label='Date'
+              rules={[
+                {
+                  required: true,
+                  message: 'Required',
+                },
+              ]}
+            >
+              <DatePicker size='large' placeholder='Date' className='w-full' />
+            </Form.Item>
+          </Col>
+          <Col lg={6} xs={12}>
+            <Form.Item name='toBeReturned' label='To Be Returned?'>
+              <Checkbox onChange={(e) => setToBeReturned(e.target.checked)} />
+            </Form.Item>
+          </Col>
+          <Col lg={9} xs={12}>
+            <Form.Item name='returnDate' label='Return Date'>
               <DatePicker
                 size='large'
+                placeholder='Return Date'
                 className='w-full'
+                disabled={!toBeReturned}
                 format='MMM, DD/YYYY'
               />
             </Form.Item>
           </Col>
           <Col lg={24} xs={24}>
-            <Form.Item name='description' label='Additional Info.'>
-              <Input.TextArea
-                size='large'
-                placeholder='Storage/Exp. Date/Condition...'
-              />
+            <Form.Item name='description' label='Note'>
+              <Input.TextArea size='large' placeholder='Note.' />
             </Form.Item>
           </Col>
           <Col lg={24} xs={24} className='flex flex-row justify-end'>
@@ -240,4 +248,4 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     </div>
   );
 };
-export default ItemForm;
+export default ItemDischargeForm;

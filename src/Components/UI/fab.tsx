@@ -11,12 +11,15 @@ import { BsBoxSeam } from 'react-icons/bs';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import ItemForm from '../Item/form.item';
-import { IItem } from '@/Interface/Item/item.interface';
+import { IDischarge, IItem } from '@/Interface/Item/item.interface';
 import PurchaseForm from '../Purchase/form.purchase';
 import { IPurchase } from '@/Interface/Purchase/purchase.interface';
 import { generateModalTitle } from '@/Utils/generate';
 import VendorForm from '../Vendor/form.vendor';
 import { IVendor } from '@/Interface/Vendor/vendor.interface';
+import ItemDischargeForm from '../Item/form.item.discharge';
+import AdjustmentForm from '../Item/adjustment.form';
+import { HiOutlineArrowsUpDown } from 'react-icons/hi2';
 
 const Fab: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,8 +43,8 @@ const Fab: React.FC = () => {
         className='lg:right-[20%] right-10'
       >
         <FloatButton
-          icon={<MdAddShoppingCart />}
-          tooltip='New Purchase'
+          icon={<HiOutlineArrowsUpDown />}
+          tooltip='Inventory Adjustment'
           onClick={() => handleOpenModal('purchase', 700)}
         />
         <FloatButton
@@ -63,14 +66,14 @@ const Fab: React.FC = () => {
         className='rounded-3xl'
         footer={[]}
         style={{
-          top: 30,
+          top: 10,
         }}
         styles={{
           content: {
             borderRadius: '2em',
             backgroundColor: '#fafafa',
-            maxHeight: '40em',
-            overflow: 'auto',
+            maxHeight: '43em',
+            overflow: 'hidden',
             paddingBottom: 0,
           },
           body: {
@@ -93,9 +96,17 @@ const Fab: React.FC = () => {
         ) : modal.name === 'item' ? (
           <ItemForm item={(modal.item as IItem) ?? null} />
         ) : modal.name === 'purchase' ? (
-          <PurchaseForm item={(modal.item as IPurchase) ?? null} />
+          <AdjustmentForm
+            item={(modal.item as IPurchase) ?? null}
+            type='purchase'
+          />
         ) : modal.name === 'vendor' ? (
           <VendorForm item={(modal.item as IVendor) ?? null} />
+        ) : modal.name === 'discharge' ? (
+          <AdjustmentForm
+            item={(modal.item as IDischarge) ?? null}
+            type='discharge'
+          />
         ) : null}
       </Modal>
     </>

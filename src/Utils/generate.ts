@@ -34,12 +34,18 @@ Number.prototype.formatCurrency = function (
   });
 };
 
+Number.prototype.formatNumber = function () {
+  return this.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+};
 export function generateModalTitle(type: ModalNameType): string {
   return type === 'item'
     ? 'New Item'
     : type === 'vendor'
     ? 'New Vendor'
     : type === 'purchase'
-    ? 'New Purchase'
+    ? 'Inventory Adjustment'
     : '';
 }

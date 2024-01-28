@@ -1,7 +1,12 @@
+import { IDischarge, IItem } from '@/Interface/Item/item.interface';
+import { IPurchase } from '@/Interface/Purchase/purchase.interface';
+
 export interface Option {
   value: string | number;
-  label: string;
+  label?: string;
+  icon?: React.ReactElement;
   children?: Option[];
+  parent?: string;
 }
 export const categoryOptions: Option[] = [
   {
@@ -16,7 +21,6 @@ export const categoryOptions: Option[] = [
         value: 'paperNotebooks',
         label: 'Paper, Notebooks',
       },
-      // Add other office supplies as needed
     ],
   },
   {
@@ -31,7 +35,6 @@ export const categoryOptions: Option[] = [
         value: 'chairs',
         label: 'Chairs',
       },
-      // Add other classroom furniture items as needed
     ],
   },
   {
@@ -46,7 +49,6 @@ export const categoryOptions: Option[] = [
         value: 'referenceMaterials',
         label: 'Reference Materials',
       },
-      // Add other educational materials as needed
     ],
   },
   {
@@ -61,7 +63,6 @@ export const categoryOptions: Option[] = [
         value: 'laptops',
         label: 'Laptops',
       },
-      // Add other IT equipment items as needed
     ],
   },
   {
@@ -76,7 +77,6 @@ export const categoryOptions: Option[] = [
         value: 'labGlassware',
         label: 'Lab Glassware',
       },
-      // Add other laboratory equipment items as needed
     ],
   },
   {
@@ -91,7 +91,6 @@ export const categoryOptions: Option[] = [
         value: 'sportsUniforms',
         label: 'Sports Uniforms',
       },
-      // Add other sports equipment items as needed
     ],
   },
   {
@@ -106,7 +105,6 @@ export const categoryOptions: Option[] = [
         value: 'tools',
         label: 'Tools',
       },
-      // Add other maintenance supplies as needed
     ],
   },
   {
@@ -121,7 +119,6 @@ export const categoryOptions: Option[] = [
         value: 'magazines',
         label: 'Magazines',
       },
-      // Add other library inventory items as needed
     ],
   },
   {
@@ -136,7 +133,6 @@ export const categoryOptions: Option[] = [
         value: 'brushes',
         label: 'Brushes',
       },
-      // Add other art supplies as needed
     ],
   },
   {
@@ -151,7 +147,6 @@ export const categoryOptions: Option[] = [
         value: 'drums',
         label: 'Drums',
       },
-      // Add other musical instruments as needed
     ],
   },
   {
@@ -166,7 +161,6 @@ export const categoryOptions: Option[] = [
         value: 'kitchenEquipment',
         label: 'Kitchen Equipment',
       },
-      // Add other cafeteria supplies as needed
     ],
   },
   {
@@ -181,8 +175,203 @@ export const categoryOptions: Option[] = [
         value: 'teamUniforms',
         label: 'Team Uniforms',
       },
-      // Add other uniforms and apparel items as needed
     ],
   },
-  // Add more categories as needed
 ];
+export const categoryOptionsFlat: Option[] = [
+  {
+    value: 'officeSupplies',
+    label: 'Office Supplies',
+  },
+  {
+    value: 'pensPencils',
+    label: 'Pens, Pencils, Erasers',
+    parent: 'officeSupplies',
+  },
+  {
+    value: 'paperNotebooks',
+    label: 'Paper, Notebooks',
+    parent: 'officeSupplies',
+  },
+  {
+    value: 'classroomFurniture',
+    label: 'Classroom Furniture',
+  },
+  {
+    value: 'desks',
+    label: 'Desks',
+    parent: 'classroomFurniture',
+  },
+  {
+    value: 'chairs',
+    label: 'Chairs',
+    parent: 'classroomFurniture',
+  },
+  {
+    value: 'educationalMaterials',
+    label: 'Educational Materials',
+  },
+  {
+    value: 'textbooks',
+    label: 'Textbooks',
+    parent: 'educationalMaterials',
+  },
+  {
+    value: 'referenceMaterials',
+    label: 'Reference Materials',
+    parent: 'educationalMaterials',
+  },
+  {
+    value: 'itEquipment',
+    label: 'IT Equipment',
+  },
+  {
+    value: 'computers',
+    label: 'Computers',
+    parent: 'itEquipment',
+  },
+  {
+    value: 'laptops',
+    label: 'Laptops',
+    parent: 'itEquipment',
+  },
+  {
+    value: 'laboratoryEquipment',
+    label: 'Laboratory Equipment',
+  },
+  {
+    value: 'microscopes',
+    label: 'Microscopes',
+    parent: 'laboratoryEquipment',
+  },
+  {
+    value: 'labGlassware',
+    label: 'Lab Glassware',
+    parent: 'laboratoryEquipment',
+  },
+  {
+    value: 'sportsEquipment',
+    label: 'Sports Equipment',
+  },
+  {
+    value: 'balls',
+    label: 'Balls (Soccer, Basketball, etc.)',
+    parent: 'sportsEquipment',
+  },
+  {
+    value: 'sportsUniforms',
+    label: 'Sports Uniforms',
+    parent: 'sportsEquipment',
+  },
+  {
+    value: 'maintenanceSupplies',
+    label: 'Maintenance Supplies',
+  },
+  {
+    value: 'cleaningSupplies',
+    label: 'Cleaning Supplies',
+    parent: 'maintenanceSupplies',
+  },
+  {
+    value: 'tools',
+    label: 'Tools',
+    parent: 'maintenanceSupplies',
+  },
+  {
+    value: 'libraryInventory',
+    label: 'Library Inventory',
+  },
+  {
+    value: 'books',
+    label: 'Books',
+    parent: 'libraryInventory',
+  },
+  {
+    value: 'magazines',
+    label: 'Magazines',
+    parent: 'libraryInventory',
+  },
+  {
+    value: 'artSupplies',
+    label: 'Art Supplies',
+  },
+  {
+    value: 'paints',
+    label: 'Paints',
+    parent: 'artSupplies',
+  },
+  {
+    value: 'brushes',
+    label: 'Brushes',
+    parent: 'artSupplies',
+  },
+  {
+    value: 'musicalInstruments',
+    label: 'Musical Instruments',
+  },
+  {
+    value: 'guitars',
+    label: 'Guitars',
+    parent: 'musicalInstruments',
+  },
+  {
+    value: 'drums',
+    label: 'Drums',
+    parent: 'musicalInstruments',
+  },
+  {
+    value: 'cafeteriaSupplies',
+    label: 'Cafeteria Supplies',
+  },
+  {
+    value: 'platesCupsUtensils',
+    label: 'Plates, Cups, Utensils',
+    parent: 'cafeteriaSupplies',
+  },
+  {
+    value: 'kitchenEquipment',
+    label: 'Kitchen Equipment',
+    parent: 'cafeteriaSupplies',
+  },
+  {
+    value: 'uniformsAndApparel',
+    label: 'Uniforms and Apparel',
+  },
+  {
+    value: 'schoolUniforms',
+    label: 'School Uniforms',
+    parent: 'uniformsAndApparel',
+  },
+  {
+    value: 'teamUniforms',
+    label: 'Team Uniforms',
+    parent: 'uniformsAndApparel',
+  },
+];
+export const getStockAmount = (
+  record: IItem | null,
+  purchases: IPurchase[],
+  discharges: IDischarge[]
+): number => {
+  if (!record) {
+    return 0;
+  }
+  const purchasedAmount = purchases.reduce((tsum, purchase) => {
+    const eligableItems = purchase.items.filter(
+      (pi) => pi.item?.id === record.id
+    );
+    const total = eligableItems.reduce((sum, pi) => {
+      const quantity = pi.quantity ?? 0;
+      return sum + quantity;
+    }, 0);
+    return tsum + total;
+  }, 0);
+  const startQuantity = record.startQuantity ?? 0;
+  const dischargedAmount = discharges
+    .filter((discharge) => discharge.item.id === record.id)
+    .reduce((sum, dis) => {
+      const quantity = dis.quantity;
+      return sum + quantity;
+    }, 0);
+  return startQuantity + purchasedAmount - dischargedAmount;
+};

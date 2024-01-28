@@ -5,7 +5,6 @@ import { openModal } from '@/store/slices/modal.slice';
 import { RootState } from '@/store/store';
 import { Badge, CalendarProps } from 'antd';
 import moment, { Moment } from 'moment';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Chore() {
@@ -79,16 +78,10 @@ export default function Chore() {
     value: Moment,
     info: { source: 'year' | 'month' | 'date' | 'customize' }
   ) => {
-    const selectedChores: IChore[] = chores.filter((chore) =>
-      moment(chore.date).isSame(
-        moment(value),
-        info.source === 'date' ? 'day' : 'month'
-      )
-    );
     dispatch(
       openModal({
         isVisible: true,
-        component: <ManipulateChores chores={selectedChores} />,
+        component: <ManipulateChores date={value} source={info.source} />,
         title: 'Chores',
       })
     );

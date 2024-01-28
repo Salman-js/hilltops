@@ -39,7 +39,7 @@ body {
 }
 /* =====================================Home================== */
 .home-header {
-  @apply w-11/12;
+  @apply w-11/12 flex flex-row justify-start;
 }
 .welcome-text {
   @apply text-2xl text-gray-900 font-semibold tracking-wide;
@@ -133,6 +133,27 @@ body {
 }
 .chore-calendar-container {
   @apply w-full;
+}
+
+/* ===================================== Inventory ======================= */
+
+.category-carousel-container {
+  @apply lg:w-[70vw] w-[80vw];
+}
+.category-carousel {
+  @apply w-full shadow-inner rounded-lg my-6;
+}
+.category-tile {
+  @apply min-w-44 rounded-lg shadow-md p-3 m-3 cursor-pointer;
+}
+.category-data-container {
+  @apply flex flex-row justify-start items-center space-x-3 my-2;
+}
+.category-value {
+  @apply text-lg font-semibold text-gray-900;
+}
+.inventory-table-container {
+  @apply lg:w-[70vw] w-[80vw] px-4;
 }
 @media (prefers-color-scheme: light) {
 }

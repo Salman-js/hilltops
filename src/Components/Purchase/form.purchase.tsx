@@ -24,6 +24,7 @@ import Table, { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { IItem } from '@/Interface/Item/item.interface';
 import AnimatedNumbers from 'react-animated-numbers';
+import moment from 'moment';
 
 type formItemProps = {
   item: IPurchase | null;
@@ -47,6 +48,7 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
       const { items, ...purchaseData } = item;
       return {
         ...purchaseData,
+        date: moment(purchaseData.date),
       };
     } else {
       return {};
@@ -198,13 +200,7 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
       render: (text, record, index) => (
         <Form.Item
           name={[index, 'unitPrice']}
-          rules={[
-            { required: true, message: 'Required' },
-            {
-              min: 1,
-              message: 'Invalid input',
-            },
-          ]}
+          rules={[{ required: true, message: 'Required' }]}
         >
           <InputNumber
             onChange={(value) =>
@@ -222,7 +218,9 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
       render: (text, record) => (
         <Form.Item>
           <InputNumber
-            value={(record.quantity * record.unitPrice).formatCurrency()}
+            value={(
+              (record.quantity ?? 0) * (record.unitPrice ?? 0)
+            ).formatCurrency()}
             size='small'
             onChange={(value) => {
               handleInputChange(record.id, 'quantity', 1);

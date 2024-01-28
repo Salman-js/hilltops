@@ -122,6 +122,116 @@ export const ethiopiaRegions: Option[] = [
   },
   // Add more regions and cities as needed
 ];
+export const ethiopiaRegionsFlat: Option[] = [
+  {
+    value: 'addisAbaba',
+    label: 'Addis Ababa',
+  },
+  {
+    value: 'arada',
+    label: 'Arada',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'bole',
+    label: 'Bole',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'kirkos',
+    label: 'Kirkos',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'kolfeKeranio',
+    label: 'Kolfe Keranio',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'lideta',
+    label: 'Lideta',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'nifasSilkLafto',
+    label: 'Nifas Silk-Lafto',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'yeka',
+    label: 'Yeka',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'akakyKaliti',
+    label: 'Akaky Kaliti',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'addisKetema',
+    label: 'Addis Ketema',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'gullele',
+    label: 'Gullele',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'lomikura',
+    label: 'Lomi Kura',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'akakiKality',
+    label: 'Akaki Kality',
+    parent: 'addisAbaba',
+  },
+  {
+    value: 'direDawa',
+    label: 'Dire Dawa',
+  },
+  {
+    value: 'addisAlem',
+    label: 'Addis Alem',
+    parent: 'oromia',
+  },
+  {
+    value: 'adama',
+    label: 'Adama',
+    parent: 'oromia',
+  },
+  {
+    value: 'bahirDar',
+    label: 'Bahir Dar',
+    parent: 'amhara',
+  },
+  {
+    value: 'gondar',
+    label: 'Gondar',
+    parent: 'amhara',
+  },
+  {
+    value: 'mekelle',
+    label: 'Mekelle',
+    parent: 'tigray',
+  },
+  {
+    value: 'adigrat',
+    label: 'Adigrat',
+    parent: 'tigray',
+  },
+  {
+    value: 'hawassa',
+    label: 'Hawassa',
+    parent: 'SNNPR',
+  },
+  {
+    value: 'arbaMinch',
+    label: 'Arba Minch',
+    parent: 'SNNPR',
+  },
+];
 
 export const validatePhone = async (_: Rule, value: number | null) => {
   if (!value) {
