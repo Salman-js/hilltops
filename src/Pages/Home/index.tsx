@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <main className='home-container'>
       <HomeHeader />
-      <HomeTopTile vendors={vendors} items={items} />
+      <HomeTopTile />
       <AnalyticsHome items={items} vendors={vendors} />
     </main>
   );

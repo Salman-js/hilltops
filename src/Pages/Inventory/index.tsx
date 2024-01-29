@@ -52,6 +52,7 @@ export default function Inventory() {
     if (id) {
       dispatch(removeItem(id));
     }
+    setDeleteModal({ open: false });
   };
   const columns: ColumnsType<IItem> = [
     {

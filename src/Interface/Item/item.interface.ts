@@ -1,4 +1,6 @@
 import { Moment } from 'moment';
+import { IUser } from '../User/user.interface';
+import { IVendor } from '../Vendor/vendor.interface';
 
 export interface IItem {
   id: string;
@@ -7,10 +9,13 @@ export interface IItem {
   unitPrice: number;
   category?: string[];
   lastPurchaseDate?: Date | Moment;
+  lowQuantityWarning?: number;
   startQuantity?: number;
   approved: boolean;
-  vendors?: string[];
+  vendors?: IVendor[];
   description?: string;
+  user: IUser;
+  createdAt: Date | Moment;
 }
 
 export interface IDischarge {
@@ -24,4 +29,6 @@ export interface IDischarge {
   returnDate?: Date | Moment;
   givenTo?: string;
   note?: string;
+  user: IUser;
+  createdAt: Date | Moment;
 }

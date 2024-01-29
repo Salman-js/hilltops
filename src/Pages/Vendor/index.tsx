@@ -31,6 +31,7 @@ export default function Vendor() {
     if (id) {
       dispatch(removeVendor(id));
     }
+    setDeleteModal({ open: false });
   };
   const columns: ColumnsType<IVendor> = [
     {

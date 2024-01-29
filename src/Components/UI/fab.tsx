@@ -63,7 +63,7 @@ const Fab: React.FC = () => {
         open={modal.isVisible}
         width={modal.width}
         onCancel={() => dispatch(closeModal())}
-        className='rounded-3xl'
+        className='rounded-3xl z-10'
         footer={[]}
         style={{
           top: 10,

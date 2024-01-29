@@ -20,6 +20,7 @@ import { addVendor, updateVendor } from '@/store/slices/basic.slice';
 import { IVendor } from '@/Interface/Vendor/vendor.interface';
 import { ethiopiaRegions, validatePhone } from './vendor.utils';
 import { Rule } from 'antd/es/form';
+import moment from 'moment';
 
 type formItemProps = {
   item: IVendor | null;
@@ -39,9 +40,12 @@ const VendorForm: React.FC<formItemProps> = ({ item }) => {
     if (item) {
       return {
         ...item,
+        user,
       };
     } else {
-      return {};
+      return {
+        user,
+      };
     }
   }, [item]);
 
@@ -50,11 +54,8 @@ const VendorForm: React.FC<formItemProps> = ({ item }) => {
       .validateFields()
       .then((values) => {
         const newVendor: IVendor = {
-          id: selectedItem?.id,
           ...values,
-          vendors: vendors.map((vendor) =>
-            values.vendors.includes(vendor.name)
-          ),
+          id: selectedItem?.id,
         };
         if (selectedItem) {
           dispatch(
@@ -72,9 +73,8 @@ const VendorForm: React.FC<formItemProps> = ({ item }) => {
             id: String(new Date().getTime()),
             ...values,
             approved,
-            vendors: vendors.map((vendor) =>
-              values.vendors.includes(vendor.name)
-            ),
+            user,
+            createdAt: moment(),
           };
           dispatch(addVendor(newVendor));
           message.success({

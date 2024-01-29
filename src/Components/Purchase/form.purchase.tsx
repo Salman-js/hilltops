@@ -38,6 +38,7 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
   const { vendors, items, purchases } = useSelector(
     (state: RootState) => state.data
   );
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const handleCancel = () => {
     dispatch(closeModal());
@@ -48,10 +49,13 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
       const { items, ...purchaseData } = item;
       return {
         ...purchaseData,
+        user,
         date: moment(purchaseData.date),
       };
     } else {
-      return {};
+      return {
+        user,
+      };
     }
   }, [item]);
   const handleFormSubmit = () => {
@@ -77,6 +81,8 @@ const PurchaseForm: React.FC<formItemProps> = ({ item }) => {
           const newItem: IPurchase = {
             id: String(new Date().getTime()),
             ...values,
+            createdAt: moment(),
+            user,
             vendor: vendors.find((vendor) => vendor.name === values.vendor),
           };
           dispatch(addPurchase(newItem));

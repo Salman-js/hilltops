@@ -41,10 +41,14 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     if (item) {
       return {
         ...item,
+        user,
+        vendors: item.vendors?.map((vendor) => vendor.name),
         lastPurchaseDate: moment(item.lastPurchaseDate),
       };
     } else {
-      return {};
+      return {
+        user,
+      };
     }
   }, [item]);
 
@@ -55,7 +59,7 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
         const newItem: IItem = {
           id: selectedItem?.id,
           ...values,
-          vendors: vendors.map((vendor) =>
+          vendors: vendors.filter((vendor) =>
             values.vendors.includes(vendor.name)
           ),
         };
@@ -75,7 +79,9 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
             id: String(new Date().getTime()),
             ...values,
             approved,
-            vendors: vendors.map((vendor) =>
+            createdAt: moment(),
+            user,
+            vendors: vendors.filter((vendor) =>
               values.vendors.includes(vendor.name)
             ),
           };
@@ -97,7 +103,7 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
     <div className='form-container'>
       <Form form={form} layout='vertical'>
         <Row gutter={[10, 0]}>
-          <Col lg={6} xs={24}>
+          <Col lg={6} xs={12}>
             <Form.Item
               name='itemId'
               label='Item ID'
@@ -126,7 +132,7 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               />
             </Form.Item>
           </Col>
-          <Col lg={18} xs={24}>
+          <Col lg={9} xs={12}>
             <Form.Item
               name='name'
               label='Item Name'
@@ -140,7 +146,17 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               <Input size='large' placeholder='Name' />
             </Form.Item>
           </Col>
-          <Col lg={6} xs={12}>
+          <Col lg={9} xs={12}>
+            <Form.Item name='category' label='Category'>
+              <Cascader
+                options={categoryOptions}
+                placeholder='Category'
+                size='large'
+                className='w-full'
+              />
+            </Form.Item>
+          </Col>
+          <Col lg={8} xs={12}>
             <Form.Item
               name='unitPrice'
               label='Unit Price'
@@ -160,7 +176,7 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               />
             </Form.Item>
           </Col>
-          <Col lg={6} xs={12}>
+          <Col lg={8} xs={12}>
             <Form.Item
               name='startQuantity'
               label='Starting Quantity'
@@ -179,7 +195,17 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               />
             </Form.Item>
           </Col>
-          <Col lg={12} xs={24}>
+          <Col lg={8} xs={12}>
+            <Form.Item name='lowQuantityWarning' label='Low Quantity Warning'>
+              <InputNumber
+                controls={false}
+                size='large'
+                min={0}
+                className='w-full'
+              />
+            </Form.Item>
+          </Col>
+          <Col lg={16} xs={12}>
             <Form.Item name='vendors' label='Vendors'>
               <Select
                 options={vendors.map((vendor) => {
@@ -192,17 +218,7 @@ const ItemForm: React.FC<formItemProps> = ({ item }) => {
               />
             </Form.Item>
           </Col>
-          <Col lg={12} xs={24}>
-            <Form.Item name='category' label='Category'>
-              <Cascader
-                options={categoryOptions}
-                placeholder='Category'
-                size='large'
-                className='w-full'
-              />
-            </Form.Item>
-          </Col>
-          <Col lg={12} xs={24}>
+          <Col lg={8} xs={12}>
             <Form.Item name='lastPurchaseDate' label='Last Purchase Date'>
               <DatePicker
                 size='large'

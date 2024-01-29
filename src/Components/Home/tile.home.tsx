@@ -1,32 +1,52 @@
 import { IItem } from '@/Interface/Item/item.interface';
 import { IVendor } from '@/Interface/Vendor/vendor.interface';
 import { ShopFilled, UserOutlined } from '@ant-design/icons';
-import { Alert, Col, Row, Space } from 'antd';
-import React from 'react';
+import { Alert, Button, Col, Row, Space } from 'antd';
+import React, { useState } from 'react';
 import { BsBoxSeamFill } from 'react-icons/bs';
 import { GoGraph } from 'react-icons/go';
-import { HiUser } from 'react-icons/hi';
+import { getStockAmount } from '../Item/item.utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { openModal } from '@/store/slices/modal.slice';
+import { IAlert } from '@/Interface/User/user.interface';
 
-export type tileHomeProps = {
-  vendors: IVendor[];
-  items: IItem[];
-};
-
-const HomeTopTile: React.FC<tileHomeProps> = ({ vendors, items }) => {
-  const alerts = [
-    {
-      message: 'Item 1 has almost ran out. Replenish soon.',
-    },
-    {
-      message: 'Item 2 has almost ran out. Replenish soon.',
-    },
-    {
-      message: 'Item 3 has almost ran out. Replenish soon.',
-    },
-    {
-      message: 'Item 4 has almost ran out. Replenish soon.',
-    },
-  ];
+const HomeTopTile: React.FC = () => {
+  const { discharges, purchases, items, vendors } = useSelector(
+    (state: RootState) => state.data
+  );
+  const dispatch = useDispatch();
+  const [alerts, setAlerts] = useState<(IAlert | undefined)[]>(
+    items
+      .filter((item) => {
+        const amountLeft = getStockAmount(item, purchases, discharges);
+        const lowQuantity = item.lowQuantityWarning ?? 0;
+        if (amountLeft < lowQuantity) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      })
+  );
+  const handleRemoveAlert = (id: string | undefined) => {
+    setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert?.id !== id));
+  };
+  const handleReplenishModal = () => {
+    dispatch(
+      openModal({
+        name: 'purchase',
+        item: null,
+        title: 'Inventory Adjustment',
+        width: 600,
+      })
+    );
+  };
   return (
     <div className='home-header-tiles-container'>
       <Row gutter={[16, 16]}>
@@ -106,9 +126,26 @@ const HomeTopTile: React.FC<tileHomeProps> = ({ vendors, items }) => {
                 direction='vertical'
                 className='w-full items-center justify-center'
               >
-                {alerts?.map((alert) => (
-                  <Alert message={alert.message} type='error' closable />
-                )) ?? (
+                {alerts?.length ? (
+                  alerts?.map((alert) => (
+                    <Alert
+                      message={`${alert?.name + ' almost out of stock!'}`}
+                      action={
+                        <Button
+                          size='small'
+                          type='text'
+                          onClick={handleReplenishModal}
+                        >
+                          Replenish
+                        </Button>
+                      }
+                      type='warning'
+                      closable
+                      afterClose={() => handleRemoveAlert(alert?.id)}
+                      showIcon
+                    />
+                  ))
+                ) : (
                   <p className='pt-5 opacity-60 text-gray-400 font-semibold'>
                     Nothing here
                   </p>

@@ -1,4 +1,6 @@
+import { Moment } from 'moment';
 import { IItem } from '../Item/item.interface';
+import { IUser } from '../User/user.interface';
 
 export interface IVendor {
   id: string;
@@ -8,4 +10,6 @@ export interface IVendor {
   phone?: string;
   email?: string;
   commonItems?: IItem[];
+  user: IUser;
+  createdAt: Date | Moment;
 }

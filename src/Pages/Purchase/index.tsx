@@ -54,10 +54,14 @@ export default function Purchase() {
     id: string | undefined
   ) => {
     if (id) {
-      if (type === 'purchase') {
+      if (type === 'purchase' && id) {
         dispatch(removePurchase(id));
+        setDeleteModal({ open: false, type: 'purchase' });
       } else {
-        dispatch(removeDischarge(id));
+        if (id) {
+          dispatch(removeDischarge(id));
+          setDeleteModal({ open: false, type: 'purchase' });
+        }
       }
     }
   };

@@ -1,6 +1,7 @@
 import { Moment } from 'moment';
 import { IVendor } from '../Vendor/vendor.interface';
 import { IItem } from '../Item/item.interface';
+import { IUser } from '../User/user.interface';
 
 export interface IPurchase {
   id: string;
@@ -10,6 +11,8 @@ export interface IPurchase {
   approved: boolean;
   vendor: IVendor;
   items: IPItem[];
+  user: IUser;
+  createdAt: Date | Moment;
 }
 export interface IPItem {
   id: string;

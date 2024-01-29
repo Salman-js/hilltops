@@ -55,9 +55,12 @@ const ItemDischargeForm: React.FC<formItemProps> = ({ item }) => {
         ...item,
         date: moment(item.date),
         returnDate: moment(item.returnDate),
+        user,
       };
     } else {
-      return {};
+      return {
+        user,
+      };
     }
   }, [item]);
 
@@ -78,7 +81,7 @@ const ItemDischargeForm: React.FC<formItemProps> = ({ item }) => {
             })
           );
           message.success({
-            content: 'Item Discharged',
+            content: 'Discharge data updated',
           });
           dispatch(closeModal());
         } else {
@@ -86,11 +89,13 @@ const ItemDischargeForm: React.FC<formItemProps> = ({ item }) => {
             id: String(new Date().getTime()),
             ...values,
             approved,
+            createdAt: moment(),
+            user,
             item: items.find((item) => item.name === values.item),
           };
           dispatch(addDischarge(newItem));
           message.success({
-            content: 'Discharge data updated',
+            content: 'Item Discharged',
           });
           dispatch(closeModal());
         }
@@ -203,7 +208,12 @@ const ItemDischargeForm: React.FC<formItemProps> = ({ item }) => {
                 },
               ]}
             >
-              <DatePicker size='large' placeholder='Date' className='w-full' />
+              <DatePicker
+                size='large'
+                placeholder='Date'
+                className='w-full'
+                format='MMM, DD/YYYY'
+              />
             </Form.Item>
           </Col>
           <Col lg={6} xs={12}>
