@@ -48,14 +48,14 @@ export default function Login() {
           <div className='login-image-text-container'>
             <div className='p-4'>
               <span className='text-7xl text-gray-50 break-words mb-3 font-semibold'>
-                Store Management System
+                Inventory Management System
               </span>
             </div>
           </div>
         </div>
         <div className='login-form-container'>
           <div>
-            <img src='/assets/logo.jpg' alt='' className='w-20' />
+            {/* <img src='/assets/logo.jpg' alt='' className='w-20' /> */}
           </div>
           <div className='text-center flex flex-col justify-center items-center border border-black'>
             <p className='text-4xl text-gray-900 font-semibold -mb-2'>
